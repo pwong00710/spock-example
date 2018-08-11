@@ -57,4 +57,9 @@ class GroovyApp {
             println("empty list")
         }
     }
+
+    static void main(String[] args) {
+        def app = new GroovyApp("Hello World!")
+        app.hello()
+    }
 }
