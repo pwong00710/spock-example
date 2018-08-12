@@ -1,3 +1,5 @@
+import java.time.LocalDateTime
+
 class GroovyApp {
     private String msg
 
@@ -83,12 +85,121 @@ class GroovyApp {
         println(b);
         println(bi);
         println(bd);
+
+        String sample = "Hello world";
+        println(sample[4]); // Print the 5 character in the string
+
+        //Print the 1st character in the string starting from the back
+        println(sample[-1]);
+        println(sample[1..2]);//Prints a string starting from Index 1 to 2
+        println(sample[4..2]);//Prints a string starting from Index 4 back to 2
+    }
+
+    void doFile(String pathname) {
+        File file = new File(pathname);
+
+        file.eachLine {
+            line -> println "line : $line";
+        }
+
+//        println file.text
+
+        LocalDateTime dt = LocalDateTime.now()
+
+        println "add line: ${dt}"
+
+        file.append(dt.toString()+"\n")
+    }
+
+    void doRegularExpression() {
+        def regex = ~'Groovy'
+
+        if ('Groovy' =~ 'Groovy') {
+            println "'Groovy' =~ 'Groovy'"
+        }
+
+        if ('Groovy' =~ 'oo') {
+            println "'Groovy' =~ 'oo'"
+        }
+
+        if ('Groovy' ==~ 'Groovy') {
+            println "'Groovy' ==~ 'Groovy'"
+        }
+
+        if ('Groovy' ==~ 'oo') {
+            println "'Groovy' ==~ 'oo'"
+        }
+
+        if ('Groovy' =~ '^G') {
+            println "'Groovy' ==~ '^G'"
+        }
+
+        if ('Groovy' =~ 'y$') {
+            println "'Groovy' =~ 'y\$'"
+        }
+
+        if ('Groovy' =~ 'Gro*vy' || 'Groovy' =~ 'Gro{2}vy') {
+            println "'Groovy' =~ 'Gro*vy' || 'Groovy' =~ 'Gro{2}vy'"
+        }
+    }
+
+    void doExceptionHandling() {
+        try {
+            def arr = new int[3]
+            arr[-1] = 5
+            println "arr[2]:${arr[-1]}"
+            arr[5] = 5
+            println "$arr[5]:arr[5]"
+        }catch(ArrayIndexOutOfBoundsException ex) {
+            println(ex.toString())
+            println(ex.getMessage())
+            println(ex.getStackTrace())
+        } catch(Exception ex) {
+            println("Catching the exception")
+        }finally {
+            println("The final block")
+        }
+
+        println("Let's move on after the exception")
+    }
+
+    void doClosure() {
+        def str1 = "Hello"
+        def clos = { param -> println "${str1} ${param}" }
+        clos.call("World")
+
+        // We are now changing the value of the String str1 which is referenced in the closure
+        str1 = "Welcome"
+        clos.call("World")
+
+        // Passing our closure to a method
+        this.display(clos)
+
+        def lst = [11, 12, 13, 14];
+        lst.each {it -> println it}
+        lst.each {it -> it--; if(it % 2 == 0) println it }
+
+        println lst.find {it > 12}
+        println lst.findAll {it > 12}
+
+        def newlst = []
+        newlst = lst.collect {element -> return element * element}
+        println(newlst)
+
+        def mp = ["TopicName" : "Maps", "TopicDescription" : "Methods in Maps"]
+        mp.each {println it}
+        mp.each {println "${it.key} maps to: ${it.value}"}
     }
 
     // Default parameter values
     def sum(int a,int b = 5) {
         int c = a+b;
         return c;
+    }
+
+    def display(clo) {
+        // This time the $param parameter gets replaced by the string "Inner"
+        clo.call("Inner")
     }
 
     static void main(String[] args) {

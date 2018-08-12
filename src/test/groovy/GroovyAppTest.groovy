@@ -44,4 +44,24 @@ class GroovyAppTest extends GroovyTestCase {
         println("sum(5):"+app.sum(5));
         println("sum(5,6):"+app.sum(5, 6));
     }
+
+    void testFile() {
+        println("=== testFile ===")
+        app.doFile(".\\src\\main\\resources\\Example.txt")
+    }
+
+    void testRegularExpression() {
+        println("=== testRegularExpression ===")
+        app.doRegularExpression()
+    }
+
+    void testExceptionHandling() {
+        println("=== testExceptionHandling ===")
+        app.doExceptionHandling()
+    }
+
+    void testClosure() {
+        println("=== testClosure ===")
+        app.doClosure()
+    }
 }
