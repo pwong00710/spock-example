@@ -64,4 +64,9 @@ class GroovyAppTest extends GroovyTestCase {
         println("=== testClosure ===")
         app.doClosure()
     }
+
+    void testJSon() {
+        println("=== testJSON ===")
+        app.doJSon()
+    }
 }

@@ -1,3 +1,7 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 import java.time.LocalDateTime
 
 class GroovyApp {
@@ -191,6 +195,54 @@ class GroovyApp {
         mp.each {println "${it.key} maps to: ${it.value}"}
     }
 
+    void doJSon() {
+        def jsonSlurper = new JsonSlurper()
+        def object = jsonSlurper.parseText('{ "name": "John", "ID" : "1"}')
+
+        println(object.name)
+        println(object.ID)
+
+
+        Object lst = jsonSlurper.parseText('{ "List": [2, 3, 4, 5] }')
+
+        lst.each { println it }
+        lst.List.each { println it}
+
+        def output1 = JsonOutput.toJson([name: 'John', ID: 1])
+        println(output1)
+
+        def output2 = JsonOutput.toJson([ new Student(name: 'John',ID:1),
+                                          new Student(name: 'Mark',ID:2),
+                                          new Student(ID:3)])
+        println(output2)
+
+        def builder = new JsonBuilder()
+
+        def root = builder.students {
+            student {
+                studentname 'Joe'
+                studentid '1'
+
+                Marks(
+                        Subject1: 10,
+                        Subject2: 20,
+                        Subject3:30,
+                )
+            }
+        }
+        println(builder.toString())
+        println(root)
+
+//        def lst = builder([1, 2, 3])
+//        println(builder.toString());
+
+        def studentlist = [new Student (name: "Joe", ID: 1), new Student (name: "Mark", ID: 2),
+                           new Student (name: "John", ID: 3)]
+
+        builder (studentlist, { Student student ->name (student.name); id (student.ID)})
+        println(builder)
+    }
+
     // Default parameter values
     def sum(int a,int b = 5) {
         int c = a+b;
@@ -206,4 +258,10 @@ class GroovyApp {
         def app = new GroovyApp("Hello World!")
         app.hello()
     }
+}
+
+
+class Student {
+    String name
+    int ID
 }
